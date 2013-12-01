@@ -25,6 +25,11 @@ libssh2_src_file  = "#{Chef::Config['file_cache_path'] || '/tmp'}/libssh2-#{node
 libssh2_url = node['libssh2']['url'] ||
   "http://www.libssh2.org/download/libssh2-#{node['libssh2']['version']}.tar.gz"
 
+configure_options = node['libssh2']['configure_options']
+make_options      = node['libssh2']['make_options']
+install_options   = node['libssh2']['install_options']
+
+
 remote_file libssh2_url do
   source   libssh2_url
   path     libssh2_src_file
@@ -40,9 +45,9 @@ bash "install_libssh2" do
     tar -zxf #{libssh2_src_file} -C #{::File.dirname(libssh2_src_file)}
 
     (cd libssh2-#{node['libssh2']['version']}/ && \
-    ./configure --prefix=/usr && \
-    make         && \
-    make install )
+    ./configure #{configure_options}           && \
+    make #{make_options}                       && \
+    make install #{install_options})
   EOH
   
   action :nothing
@@ -55,6 +60,11 @@ medusa_src_file  = "#{Chef::Config['file_cache_path'] || '/tmp'}/medusa-#{node['
 
 medusa_url = node['medusa']['url'] ||
   "http://www.medusa.org/download/medusa-#{node['medusa']['version']}.tar.gz"
+
+configure_options = node['medusa']['configure_options']
+make_options      = node['medusa']['make_options']
+install_options   = node['medusa']['install_options']
+
 
 remote_file medusa_url do
   source   medusa_url
@@ -71,11 +81,13 @@ bash "install_medusa" do
     tar -zxf #{medusa_src_file} -C #{::File.dirname(medusa_src_file)}
 
     (cd medusa-#{node['medusa']['version']}/ && \
+
     # Fix bug where afpclient directory was hardcoded.
-    sed -si  's|/usr/lib/libafpclient.so.0|/usr/lib/x86_64-linux-gnu/libafpclient.so.0|' configure && \
-    ./configure  && \
-    make         && \
-    make install )
+    sed -si  's|/usr/lib/libafpclient.so.0|-lafpclient|' configure && \
+   
+    ./configure #{configure_options}           && \
+    make #{make_options}                       && \
+    make install #{install_options})
   EOH
   
   action :nothing
