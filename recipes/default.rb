@@ -1,16 +1,13 @@
 #
-# Cookbook Name:: medusa
+# Cookbook Name:: Medusa
 # Recipe:: default
 #
-# Copyright (C) 2013 Jonathan Werrett
-# 
-# All rights reserved - Do Not Redistribute
+# Copyright (C) 2014 Jonathan Werrett
 #
-
 
 package 'build-essential'
 
-## Require librariers to support brute-forcing of all protocols.
+## Libraries required to support brute-forcing of all protocols.
 package 'libncp-dev'
 package 'libpcre3-dev'
 package 'libpq-dev'
@@ -49,7 +46,7 @@ bash "install_libssh2" do
     make #{make_options}                       && \
     make install #{install_options})
   EOH
-  
+
   action :nothing
   not_if "/sbin/ldconfig -p | grep -q libssh2.so"
 end
@@ -84,12 +81,12 @@ bash "install_medusa" do
 
     # Fix bug where afpclient directory was hardcoded.
     sed -si  's|/usr/lib/libafpclient.so.0|-lafpclient|' configure && \
-   
+
     ./configure #{configure_options}           && \
     make #{make_options}                       && \
     make install #{install_options})
   EOH
-  
+
   action :nothing
   not_if "#{node['medusa']['binary']} -V | grep -q 'Medusa -v#{node['medusa']['version']}'"
 end
