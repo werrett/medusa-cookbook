@@ -1,8 +1,9 @@
 # Medusa Cookbook
 
-Simple cookbook to build [Medusa](http://foofus.net/goons/jmk/medusa/medusa.html) from source.
+Cookbook to build [Medusa](http://foofus.net/goons/jmk/medusa/medusa.html)
+, the 'Parallel Network Login Auditor', from source.
 
-Need to also compile [libssh2](http://www.libssh2.org/) from scratch to [support SSH brute forcing](http://foofus.net/goons/jmk/medusa/medusa-ssh.html).
+It also compiles [libssh2](http://www.libssh2.org/) from scratch to [support SSH brute forcing](http://foofus.net/goons/jmk/medusa/medusa-ssh.html).
 
 # Requirements
 
